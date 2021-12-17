@@ -1,8 +1,6 @@
 package com.sample.apiclient.services;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,22 +8,20 @@ import com.sample.apiclient.helpers.ResponseContainer;
 import com.sample.apiclient.model.dto.Mahasiswa;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-@RestController
 public class MahasiswaServicesRestClient {
 
     @Autowired
     private RestTemplate restTemplate;
 
     @Autowired
-    private ObjectMapper mapper = new ObjectMapper();
+    private ObjectMapper mapper = new ObjectMapper(); // untuk menconvert object
 
+    // menyiapkan url api
     private static final String apiUrl = "http://localhost:8080/api/mahasiswa";
 
     // READ

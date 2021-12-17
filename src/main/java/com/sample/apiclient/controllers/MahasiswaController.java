@@ -1,6 +1,5 @@
 package com.sample.apiclient.controllers;
 
-import java.lang.ref.Cleaner;
 import java.util.ArrayList;
 import java.util.List;
 
