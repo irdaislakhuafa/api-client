@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="fragments/header::header"></div>
+</head>
+
+<body>
+    <!-- start navbar -->
+    <div th:replace="fragments/navbar::navbar"></div>
+    <!-- end navbar -->
+
+    <div class="container">
+        <h1 class="text-center fs-bold" style="font-size: 1000%;" th:text="${errorCode}"></h1>
+        <hr>
+        <div th:text="${message}" class="text-center display-6"></div>
+
+        <div class="text-center">
+            <a th:href="@{/apiclient/mahasiswa}" class="btn btn-outline-primary mt-3">Back</a>
+
+        </div>
+    </div>
+</body>
+
+</html>

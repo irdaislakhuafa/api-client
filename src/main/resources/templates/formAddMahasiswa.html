@@ -30,11 +30,25 @@
             </div>
 
             <!-- JK -->
-            <div class="mb-3">
-                <label for="jk" class="form-label">Jenis Kelamin</label>
-                <!-- <input type="text" class="form-control" id="jk" placeholder="Ex. Irda Islakhu Afa" th:field="*{jk}"> -->
-                <input type="text" class="form-control" id="jk" required placeholder="Ex. Laki - laki" th:field="*{jk}">
 
+            <label for="jk" class="form-label">Jenis Kelamin</label>
+            <div class="row">
+                <div class="col-sm-1">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="jk" id="laki-laki" th:field="*{jk}" checked th:value="${laki}">
+                        <label class="form-check-label" for="laki-laki">
+                            laki Laki
+                        </label>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="jk" id="perempuan" th:field="*{jk}" th:value="${perempuan}">
+                        <label class="form-check-label" for="perempuan">
+                            Perempuan
+                        </label>
+                    </div>
+                </div>
             </div>
 
             <!-- angkatan -->

@@ -10,10 +10,14 @@ import com.sample.apiclient.helpers.ResponseContainer;
 import com.sample.apiclient.model.dto.Mahasiswa;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 @Service
+@RestController
 public class MahasiswaServicesRestClient {
 
     @Autowired
@@ -69,14 +73,10 @@ public class MahasiswaServicesRestClient {
         try {
             ResponseContainer responseApi = restTemplate.getForObject(apiUrl + "/find/bynpm/" + npm,
                     ResponseContainer.class);
-            // System.out.println(responseApi);
-
-            Map<Object, Object> mahasiswaMap = new HashMap<>();
 
             Mahasiswa existsMahasiswa = mapper.convertValue(responseApi.getData(),
                     new TypeReference<Mahasiswa>() {
                     });
-            // System.out.println(existsMahasiswa);
 
             return existsMahasiswa;
         } catch (Exception e) {
@@ -100,6 +100,11 @@ public class MahasiswaServicesRestClient {
         ResponseContainer responseApi = restTemplate.postForObject(apiUrl + "/update", mahasiswa,
                 ResponseContainer.class);
         return responseApi;
+    }
+
+    // DELETE
+    public void deleteById(Long id) {
+        restTemplate.delete(apiUrl + "/delete/{id}", Long.toString(id));
     }
 
 }

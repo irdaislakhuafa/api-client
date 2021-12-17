@@ -47,7 +47,7 @@
                     </div>
                     <td>
                         <a class="btn btn-primary" th:href="@{'/apiclient/mahasiswa/edit/' + ${mahasiswa.npm}}">Edit</a>
-                        <a class="btn btn-outline-danger">Del</a>
+                        <a class="btn btn-outline-danger" th:href="@{'/apiclient/mahasiswa/delete/' + ${mahasiswa.id}}">Del</a>
                     </td>
                 </tr>
             </tbody>

@@ -1,7 +1,11 @@
 package com.sample.apiclient.controllers;
 
 import java.lang.ref.Cleaner;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sample.apiclient.model.dto.Mahasiswa;
 import com.sample.apiclient.services.MahasiswaServicesRestClient;
 
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.client.HttpClientErrorException;
 
 @Controller
 @RequestMapping("/apiclient/mahasiswa")
@@ -22,8 +27,15 @@ public class MahasiswaController {
 
     @GetMapping
     public String index(Model model) {
+        List<Mahasiswa> listMahasiswa = new ArrayList<>();
+
+        try {
+            listMahasiswa = mahasiswaServicesRestClient.findAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         model.addAttribute("title", "Demo Api Client");
-        model.addAttribute("listMahasiswa", mahasiswaServicesRestClient.findAll());
+        model.addAttribute("listMahasiswa", listMahasiswa);
         return "index";
     }
 
@@ -31,22 +43,36 @@ public class MahasiswaController {
     public String formAddMahasiswa(Model model) {
         model.addAttribute("title", "Add Mahasiswa");
         model.addAttribute("mahasiswa", new Mahasiswa());
+        model.addAttribute("laki", "L");
+        model.addAttribute("perempuan", "P");
         return "formAddMahasiswa";
     }
 
     @PostMapping("/save")
     public String saveMahasiswa(Mahasiswa mahasiswa, Model model) {
-        mahasiswa.setJk(
-                (mahasiswa.getJk().contains("l") || mahasiswa.getJk().equalsIgnoreCase("pria")) ? "L" : "P");
-        mahasiswaServicesRestClient.save(mahasiswa);
-        return "redirect:/apiclient/mahasiswa";
+        try {
+            Mahasiswa savedMahasiswa = new ObjectMapper().convertValue(
+                    mahasiswaServicesRestClient.save(mahasiswa).getData(), new TypeReference<Mahasiswa>() {
+
+                    });
+            System.out.println("Success saved : " + savedMahasiswa);
+            return "redirect:/apiclient/mahasiswa";
+        } catch (HttpClientErrorException e) {
+            // TODO: handle exception
+            e.printStackTrace();
+            model.addAttribute("errorCode", e.getRawStatusCode());
+            model.addAttribute("message", "Data with NPM : " + mahasiswa.getNpm() + " already exists!");
+            return "error-page";
+        }
     }
 
     @GetMapping("/edit/{npm}")
     public String edit(@PathVariable("npm") String npm, Model model) {
-        // System.out.println(mahasiswaServicesRestClient.findBynpm(npm).getAngkatan());
+        Mahasiswa mahasiswa = mahasiswaServicesRestClient.findByNpm(npm);
         model.addAttribute("title", "Edit Mahasiswa");
-        model.addAttribute("mahasiswa", mahasiswaServicesRestClient.findByNpm(npm));
+        model.addAttribute("mahasiswa", mahasiswa);
+        model.addAttribute("laki", "L");
+        model.addAttribute("perempuan", "P");
         return "formEditMahasiswa";
     }
 
@@ -54,6 +80,8 @@ public class MahasiswaController {
     public String update(Mahasiswa mahasiswa, Model model) {
         try {
             Mahasiswa mahasiswaIsExists = mahasiswaServicesRestClient.findByNpm(mahasiswa.getNpm());
+            mahasiswaIsExists.setJk(
+                    (mahasiswa.getJk().contains("l") || mahasiswa.getJk().equalsIgnoreCase("pria")) ? "L" : "P");
             if (mahasiswaIsExists != null) {
                 mahasiswaServicesRestClient.update(mahasiswa);
             }
@@ -64,6 +92,12 @@ public class MahasiswaController {
             return "redirect:/apiclient/mahasiswa";
         }
 
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteById(@PathVariable("id") Long id) {
+        mahasiswaServicesRestClient.deleteById(id);
+        return "redirect:/apiclient/mahasiswa";
     }
 
 }
