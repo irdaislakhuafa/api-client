@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="fragments/header::header"></div>
+</head>
+
+<body>
+    <!-- start navbar -->
+    <div th:replace="fragments/navbar::navbar"></div>
+    <!-- end navbar -->
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-11">
+                <h1 class="text-center display-3">List Mahasiswa</h1>
+            </div>
+            <div class="col-sm-1 mt-4">
+                <a th:href="@{/apiclient/mahasiswa/add}" class="btn btn-success">Add</a>
+            </div>
+        </div>
+
+        <table class="table table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>NPM</th>
+                    <th>NAMA</th>
+                    <th>JK</th>
+                    <th>Angkatan</th>
+                    <th>Alamat</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="mahasiswa : ${listMahasiswa}">
+                    <td th:text="${mahasiswa.npm}"></td>
+                    <td th:text="${mahasiswa.nama}"></td>
+                    <td th:text="${mahasiswa.jk}"></td>
+                    <td th:text="${mahasiswa.angkatan}"></td>
+
+                    <div th:if="${mahasiswa.alamat != null}">
+                        <td th:text="${mahasiswa.alamat.kota}"></td>
+                    </div>
+                    <div th:unless="${mahasiswa.alamat != null}">
+                        <td>-</td>
+                    </div>
+                    <td>
+                        <a class="btn btn-primary" th:href="@{'/apiclient/mahasiswa/edit/' + ${mahasiswa.npm}}">Edit</a>
+                        <a class="btn btn-outline-danger">Del</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>

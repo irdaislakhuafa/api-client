@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="fragments/header::header"></div>
+</head>
+
+<body>
+    <!-- start navbar -->
+    <div th:replace="fragments/navbar::navbar"></div>
+    <!-- end navbar -->
+
+    <!-- start form -->
+    <div class="text-center display-3">
+        <a th:text="${title}"></a>
+    </div>
+    <div class="container">
+
+        <form th:object="${mahasiswa}" th:action="@{/apiclient/mahasiswa/update}" method="post">
+            <!-- id -->
+            <input type="number" th:field="*{id}" th:value="${mahasiswa.id}" hidden>
+            <!-- npm -->
+            <div class="mb-3">
+                <label for="npm" class="form-label">NPM</label>
+                <input type="text" class="form-control" id="npm" required placeholder="Ex. 1412190001" th:field="*{npm}">
+            </div>
+
+            <!-- nama -->
+            <div class="mb-3">
+                <label for="nama" class="form-label">Nama</label>
+                <input type="text" class="form-control" id="nama" required placeholder="Ex. Irda Islakhu Afa" th:field="*{nama}">
+            </div>
+
+            <!-- JK -->
+            <div class="mb-3">
+                <label for="jk" class="form-label">Jenis Kelamin</label>
+                <!-- <input type="text" class="form-control" id="jk" placeholder="Ex. Irda Islakhu Afa" th:field="*{jk}"> -->
+                <input type="text" class="form-control" id="jk" required placeholder="Ex. Laki - laki" th:field="*{jk}">
+
+            </div>
+
+            <!-- angkatan -->
+            <div class="mb-3">
+                <label for="angkatan" class="form-label">Angkatan</label>
+                <input type="text" class="form-control" id="angkatan" placeholder="Ex. 2019 B" th:field="*{angkatan}">
+            </div>
+
+            <!-- alamat
+            <label for="" class="form-label fs-bold">Alamat</label>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="kota">Kota</span>
+                <input type="text" class="form-control" placeholder="Ex. Tuban" aria-label="kota" aria-describedby="kota" th:field="*{mahasiswa.alamat.kota}">
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="tlpRumah">Tlp. Rumah</span>
+                <input type="text" class="form-control" placeholder="Ex. 08XXXXXXX" aria-label="tlpRumah" aria-describedby="tlpRumah" th:field="*{mahasiswa.alamat.tlpRumah}">
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="jalan">Jalan</span>
+                <input type="text" class="form-control" placeholder="Ex. Jln. Kesini" aria-label="jalan" aria-describedby="jalan" th:field="*{mahasiswa.alamat.jalan}">
+            </div> -->
+
+
+            <div>
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a th:href="@{/apiclient/mahasiswa}" class="btn btn-warning ms-4">Back</a>
+            </div>
+
+        </form>
+    </div>
+    <!-- end form -->
+</body>
+
+</html>
