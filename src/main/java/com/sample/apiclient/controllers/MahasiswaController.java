@@ -78,18 +78,12 @@ public class MahasiswaController {
     @PostMapping("/update")
     public String update(Mahasiswa mahasiswa, Model model) {
         try {
-            Mahasiswa mahasiswaIsExists = mahasiswaServicesRestClient.findByNpm(mahasiswa.getNpm());
-            mahasiswaIsExists.setJk(
-                    (mahasiswa.getJk().contains("l") || mahasiswa.getJk().equalsIgnoreCase("pria")) ? "L" : "P");
-            if (mahasiswaIsExists != null) {
-                mahasiswaServicesRestClient.update(mahasiswa);
-            }
-            return "redirect:/apiclient/mahasiswa";
+            mahasiswaServicesRestClient.update(mahasiswa);
         } catch (Exception e) {
             // TODO: handle exception
             e.printStackTrace();
-            return "redirect:/apiclient/mahasiswa";
         }
+        return "redirect:/apiclient/mahasiswa";
 
     }
 

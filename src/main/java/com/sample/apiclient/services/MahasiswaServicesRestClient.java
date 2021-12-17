@@ -9,15 +9,15 @@ import com.sample.apiclient.model.dto.Mahasiswa;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 @Service
 public class MahasiswaServicesRestClient {
-
+    // import object RestTemplate
     @Autowired
     private RestTemplate restTemplate;
 
+    // import object ObjectMapper
     @Autowired
     private ObjectMapper mapper = new ObjectMapper(); // untuk menconvert object
 
@@ -49,9 +49,13 @@ public class MahasiswaServicesRestClient {
     // READ
     public Mahasiswa findById(Long id) {
         try {
+            // FindById from API
+            // ada 1 parameter (url api nya, nanti response Api ini disimpan dalam bentuk
+            // object dari class apa)
             ResponseContainer responseApi = restTemplate.getForObject(apiUrl + "/find/byid/" + id,
                     ResponseContainer.class);
 
+            // mengkonversi dari "Object" data dari responseApi ke object class Mahasiswa
             Mahasiswa existsMahasiswa = mapper.convertValue(
                     responseApi.getData(), new TypeReference<Mahasiswa>() {
 
@@ -65,13 +69,18 @@ public class MahasiswaServicesRestClient {
         }
     }
 
+    // READ
     public Mahasiswa findByNpm(String npm) {
         try {
+            // FindByNpm from API
+            // ada 1 parameter (url api nya, nanti response Api ini disimpan dalam bentuk
+            // object dari class apa)
             ResponseContainer responseApi = restTemplate.getForObject(apiUrl + "/find/bynpm/" + npm,
                     ResponseContainer.class);
 
-            Mahasiswa existsMahasiswa = mapper.convertValue(responseApi.getData(),
-                    new TypeReference<Mahasiswa>() {
+            // mengkonversi dari "Object" data dari responseApi ke object class Mahasiswa
+            Mahasiswa existsMahasiswa = mapper.convertValue(
+                    responseApi.getData(), new TypeReference<Mahasiswa>() {
                     });
 
             return existsMahasiswa;
@@ -84,7 +93,7 @@ public class MahasiswaServicesRestClient {
 
     // CREATE
     public ResponseContainer save(Mahasiswa mahasiswa) {
-        // parameter (url apinya, object yang dikirim, tipe response JSON nanti
+        // parameter (url apinya, object yang dikirim apa, tipe response JSON nanti
         // diconvert ke object class apa )
         ResponseContainer responseApi = restTemplate.postForObject(apiUrl + "/save", mahasiswa,
                 ResponseContainer.class);
@@ -93,6 +102,8 @@ public class MahasiswaServicesRestClient {
 
     // UPDATE
     public ResponseContainer update(Mahasiswa mahasiswa) {
+        // disini saya menggunakan POST bukan PUT
+        // mirip kyk save() di atas
         ResponseContainer responseApi = restTemplate.postForObject(apiUrl + "/update", mahasiswa,
                 ResponseContainer.class);
         return responseApi;
@@ -100,7 +111,9 @@ public class MahasiswaServicesRestClient {
 
     // DELETE
     public void deleteById(Long id) {
-        restTemplate.delete(apiUrl + "/delete/{id}", Long.toString(id));
+        // disini saya menggunakan method DELETE
+        // parameternya 1 (url apinya)
+        restTemplate.delete(apiUrl + "/delete/" + id);
     }
 
 }
