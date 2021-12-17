@@ -78,14 +78,12 @@ public class MahasiswaController {
     @PostMapping("/update")
     public String update(Mahasiswa mahasiswa, Model model) {
         try {
-
             mahasiswaServicesRestClient.update(mahasiswa);
-            return "redirect:/apiclient/mahasiswa";
         } catch (Exception e) {
             // TODO: handle exception
             e.printStackTrace();
-            return "redirect:/apiclient/mahasiswa";
         }
+        return "redirect:/apiclient/mahasiswa";
 
     }
 

@@ -9,9 +9,18 @@ import org.springframework.web.client.RestTemplate;
 
 @Configuration
 public class RestTemplateConfig {
+
+    // mengatur bean configuration untuk object restTemplate
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
-        return restTemplateBuilder.setConnectTimeout(Duration.ofSeconds(5)).setReadTimeout(Duration.ofSeconds(5))
+        return restTemplateBuilder.
+
+        // mengatur koneksi time out (jika koneksi lebih dari 5 detik baka koneksi akan
+        // terputus)
+                setConnectTimeout(Duration.ofSeconds(5)).
+                // mengatur koneksi time out (jika koneksi lebih dari 5 detik baka koneksi akan
+                // terputus)
+                setReadTimeout(Duration.ofSeconds(5))
                 .build();
     }
 }
