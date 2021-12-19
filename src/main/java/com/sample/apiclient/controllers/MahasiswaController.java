@@ -1,5 +1,6 @@
 package com.sample.apiclient.controllers;
 
+import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.ResourceAccessException;
 
 @Controller
 @RequestMapping("/apiclient/mahasiswa")
@@ -33,6 +35,11 @@ public class MahasiswaController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        // System.out.println(listMahasiswa);
+
+        model.addAttribute("message", "Connection with API failed, maybe API endpoint not running!");
+
         model.addAttribute("title", "Demo Api Client");
         model.addAttribute("listMahasiswa", listMahasiswa);
         return "index";
