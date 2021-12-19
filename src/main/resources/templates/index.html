@@ -19,7 +19,7 @@
                 <a th:href="@{/apiclient/mahasiswa/add}" class="btn btn-success">Add</a>
             </div>
 
-            <div th:if="${listMahasiswa == null}" class="col-sm-11">
+            <div th:if="${message != null}" class="col-sm-11">
                 <p th:text="${message}" class="text-danger text-center"></p>
             </div>
         </div>

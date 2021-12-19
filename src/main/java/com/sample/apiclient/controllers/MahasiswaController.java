@@ -1,11 +1,11 @@
 package com.sample.apiclient.controllers;
 
-import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sample.apiclient.helpers.MessageHelper;
 import com.sample.apiclient.model.dto.Mahasiswa;
 import com.sample.apiclient.services.MahasiswaServicesRestClient;
 
@@ -29,17 +29,19 @@ public class MahasiswaController {
     @GetMapping
     public String index(Model model) {
         List<Mahasiswa> listMahasiswa = new ArrayList<>();
+        String message = null;
 
         try {
             listMahasiswa = mahasiswaServicesRestClient.findAll();
+        } catch (ResourceAccessException e) {
+            message = MessageHelper.getServerNotRunning();
+            // e.printStackTrace();
         } catch (Exception e) {
+            System.out.println("error".toUpperCase());
             e.printStackTrace();
         }
 
-        // System.out.println(listMahasiswa);
-
-        model.addAttribute("message", "Connection with API failed, maybe API endpoint not running!");
-
+        model.addAttribute("message", message);
         model.addAttribute("title", "Demo Api Client");
         model.addAttribute("listMahasiswa", listMahasiswa);
         return "index";
@@ -84,19 +86,31 @@ public class MahasiswaController {
 
     @PostMapping("/update")
     public String update(Mahasiswa mahasiswa, Model model) {
+        String message = null;
         try {
             mahasiswaServicesRestClient.update(mahasiswa);
+        } catch (ResourceAccessException e) {
+            message = MessageHelper.getServerNotRunning();
         } catch (Exception e) {
             // TODO: handle exception
             e.printStackTrace();
         }
+        model.addAttribute("message", message);
         return "redirect:/apiclient/mahasiswa";
 
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteById(@PathVariable("id") Long id) {
-        mahasiswaServicesRestClient.deleteById(id);
+    public String deleteById(@PathVariable("id") Long id, Model model) {
+        String message = null;
+        try {
+            mahasiswaServicesRestClient.deleteById(id);
+        } catch (ResourceAccessException e) {
+            message = MessageHelper.getServerNotRunning();
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+        model.addAttribute("message", message);
         return "redirect:/apiclient/mahasiswa";
     }
 

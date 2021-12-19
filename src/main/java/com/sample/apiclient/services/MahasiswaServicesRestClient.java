@@ -25,25 +25,25 @@ public class MahasiswaServicesRestClient {
     private static final String apiUrl = "http://localhost:8080/api/mahasiswa";
 
     // READ
-    public List<Mahasiswa> findAll() {
-        try {
-            // GET all data from API
-            // ada 2 parameter (urlApi, nanti response JSON nya di convert ke class/object
-            // dari class apa)
-            ResponseContainer responseApi = restTemplate.getForObject(apiUrl + "/getall",
-                    ResponseContainer.class);
+    public List<Mahasiswa> findAll() throws Exception {
+        // try {
+        // GET all data from API
+        // ada 2 parameter (urlApi, nanti response JSON nya di convert ke class/object
+        // dari class apa)
+        ResponseContainer responseApi = restTemplate.getForObject(apiUrl + "/getall",
+                ResponseContainer.class);
 
-            // field "data" dari object responseApi saya convert ke ArrayList of object
-            // Mahasiswa
-            List<Mahasiswa> listMahasiswa = mapper.convertValue(
-                    responseApi.getData(), new TypeReference<List<Mahasiswa>>() {
+        // field "data" dari object responseApi saya convert ke ArrayList of object
+        // Mahasiswa
+        List<Mahasiswa> listMahasiswa = mapper.convertValue(
+                responseApi.getData(), new TypeReference<List<Mahasiswa>>() {
 
-                    });
-            return listMahasiswa; // mengembalikan object listMahasiswa
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+                });
+        return listMahasiswa; // mengembalikan object listMahasiswa
+        // } catch (Exception e) {
+        // e.printStackTrace();
+        // return null;
+        // }
     }
 
     // READ
